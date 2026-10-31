@@ -1,0 +1,22 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Build browser bundle
+        run: node scripts/build-client.mjs
+      - name: Browser bundle is reproducible
+        run: git diff --exit-code -- lib/client.js
+      - name: Syntax check
+        run: node --check lib/index.js && node --check lib/whoop-api.js && node --check lib/demo-data.js && node --check lib/oauth-page.js && node --check lib/client.js
+      - name: Host unit tests
+        run: node --test scripts/test-host.mjs

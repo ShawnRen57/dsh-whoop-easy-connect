@@ -1,0 +1,692 @@
+/**
+ * WHOOP account settings section styles.
+ *
+ * Scoped under `.wps-root`; every selector is `.wps-` prefixed. Colors come
+ * from the host theme tokens (with literal fallbacks) so light/dark themes
+ * work without page-level overrides. The layout mirrors the shipped settings
+ * sections and renders the four onboarding step cards from
+ * docs/UX-REDESIGN.md §三.
+ */
+
+/* ------------------------------------------------------------------ *
+ * Page shell
+ * ------------------------------------------------------------------ */
+
+.wps-root {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 640px;
+  color: var(--dsw-alias-label-primary, #1d2433);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.wps-root *,
+.wps-root *::before,
+.wps-root *::after {
+  box-sizing: border-box;
+}
+
+.wps-head {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.wps-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--dsw-alias-label-primary, #1d2433);
+}
+
+.wps-desc {
+  margin: 0;
+  font-size: 13px;
+  color: var(--dsw-alias-label-tertiary, var(--dsw-alias-label-secondary, #9aa3b2));
+}
+
+/* ------------------------------------------------------------------ *
+ * Cards
+ * ------------------------------------------------------------------ */
+
+.wps-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+  background: var(
+    --dsw-alias-settings-card-fill,
+    var(--dsw-alias-bg-layer-1, #ffffff)
+  );
+  border: 0.5px solid
+    var(--dsw-alias-settings-card-stroke, var(--dsw-alias-border-l1, #ececf1));
+  border-radius: var(--dsw-radius-xl, 16px);
+}
+
+.wps-step {
+  gap: 12px;
+}
+
+.wps-skeleton-card {
+  gap: 10px;
+}
+
+.wps-card--error {
+  border-color: rgba(214, 69, 69, 0.3);
+  border-color: color-mix(
+    in srgb,
+    var(--dsw-alias-state-error-primary, #d64545) 30%,
+    transparent
+  );
+}
+
+.wps-card-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--dsw-alias-label-primary, #1d2433);
+}
+
+/* ------------------------------------------------------------------ *
+ * Step cards
+ * ------------------------------------------------------------------ */
+
+.wps-step-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.wps-step-index {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: 0.5px solid rgba(79, 124, 255, 0.24);
+  border-radius: 50%;
+  background: rgba(79, 124, 255, 0.1);
+  background: color-mix(
+    in srgb,
+    var(--dsw-alias-brand-primary, #4f7cff) 11%,
+    transparent
+  );
+  color: var(--dsw-alias-brand-primary, #4f7cff);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.wps-step-title {
+  margin: 0;
+  min-width: 0;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--dsw-alias-label-primary, #1d2433);
+}
+
+.wps-step-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding-left: 20px;
+  color: var(--dsw-alias-label-secondary, #7b8494);
+  font-size: 12.5px;
+  line-height: 1.55;
+}
+
+.wps-step-list li::marker {
+  color: var(--dsw-alias-label-tertiary, #9aa3b2);
+}
+
+.wps-step-text {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--dsw-alias-label-secondary, #7b8494);
+}
+
+.wps-step-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+/* ------------------------------------------------------------------ *
+ * Redirect URI + copy
+ * ------------------------------------------------------------------ */
+
+.wps-redirect {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 12px;
+  border: 0.5px solid var(--dsw-alias-border-l1, #ececf1);
+  border-radius: var(--dsw-radius-lg, 10px);
+  background: var(--dsw-alias-bg-layer-2, #f5f6f8);
+}
+
+.wps-redirect-label {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--dsw-alias-label-secondary, #7b8494);
+}
+
+.wps-copy-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.wps-redirect-value {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 6px 8px;
+  border: 0.5px solid var(--dsw-alias-border-l1, #ececf1);
+  border-radius: 8px;
+  background: var(--dsw-alias-bg-base, #ffffff);
+  color: var(--dsw-alias-label-primary, #1d2433);
+  font-family: var(
+    --dsw-font-mono,
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace
+  );
+  font-size: 12px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  user-select: text;
+}
+
+/* ------------------------------------------------------------------ *
+ * Credentials
+ * ------------------------------------------------------------------ */
+
+.wps-cred-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 10px;
+}
+
+.wps-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.wps-label {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--dsw-alias-label-primary, #1d2433);
+}
+
+.wps-input {
+  width: 100%;
+  height: 34px;
+  padding: 0 10px;
+  border: 0.5px solid var(--dsw-alias-border-l2, #e3e6ec);
+  border-radius: 8px;
+  background: var(--dsw-alias-bg-base, #ffffff);
+  color: var(--dsw-alias-label-primary, #1d2433);
+  font: inherit;
+  font-size: 13px;
+}
+
+.wps-input::placeholder {
+  color: var(--dsw-alias-label-tertiary, #9aa3b2);
+}
+
+.wps-input[readonly] {
+  cursor: default;
+}
+
+.wps-input--editing {
+  border-color: var(--dsw-alias-brand-primary, #4f7cff);
+  box-shadow: 0 0 0 3px rgba(79, 124, 255, 0.12);
+}
+
+.wps-input[aria-invalid='true'] {
+  border-color: var(--dsw-alias-state-error-primary, #d64545);
+}
+
+.wps-cred-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.wps-cred-foot .wps-hint {
+  flex: 1 1 220px;
+}
+
+/* ------------------------------------------------------------------ *
+ * Hints
+ * ------------------------------------------------------------------ */
+
+.wps-hint {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--dsw-alias-label-secondary, #7b8494);
+}
+
+.wps-hint--warn {
+  color: var(--dsw-alias-state-warn-primary, #c47b0a);
+}
+
+.wps-hint-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  padding-left: 18px;
+  color: var(--dsw-alias-state-warn-primary, #c47b0a);
+  font-size: 12.5px;
+  line-height: 1.55;
+}
+
+/* ------------------------------------------------------------------ *
+ * Buttons
+ * ------------------------------------------------------------------ */
+
+.wps-btn {
+  appearance: none;
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 14px;
+  border: 0.5px solid transparent;
+  border-radius: var(--dsw-radius-lg, 10px);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 20px;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background-color 0.16s ease,
+    border-color 0.16s ease,
+    opacity 0.16s ease;
+}
+
+.wps-btn--primary {
+  background: var(--dsw-alias-button-primary-fill, #0f1115);
+  border-color: var(--dsw-alias-button-primary-fill, #0f1115);
+  color: var(--dsw-alias-label-primary-foreground, #ffffff);
+}
+
+.wps-btn--primary,
+.wps-btn--primary:visited,
+.wps-btn--primary:hover {
+  color: var(--dsw-alias-label-primary-foreground, #ffffff);
+}
+
+.wps-btn--primary:not(:disabled):hover {
+  background: var(--dsw-alias-button-primary-hover, #61666b);
+  border-color: var(--dsw-alias-button-primary-hover, #61666b);
+}
+
+.wps-btn--ghost {
+  background: transparent;
+  border-color: var(--dsw-alias-border-l2, #e3e6ec);
+  color: var(--dsw-alias-label-primary, #1d2433);
+}
+
+.wps-btn--ghost:not(:disabled):hover {
+  background: var(--dsw-alias-interactive-bg-hover, rgba(0, 0, 0, 0.045));
+}
+
+.wps-btn--danger {
+  background: transparent;
+  border-color: var(--dsw-alias-state-error-primary, #d64545);
+  color: var(--dsw-alias-state-error-primary, #d64545);
+}
+
+.wps-btn--danger:not(:disabled):hover {
+  background: rgba(214, 69, 69, 0.08);
+  background: color-mix(
+    in srgb,
+    var(--dsw-alias-state-error-primary, #d64545) 10%,
+    transparent
+  );
+}
+
+.wps-btn--small {
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+.wps-btn:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.wps-btn:focus-visible,
+.wps-input:focus-visible,
+.wps-raw-details summary:focus-visible {
+  outline: 2px solid var(--dsw-alias-brand-primary, #4f7cff);
+  outline-offset: 2px;
+}
+
+.wps-input:focus-visible {
+  outline-offset: 1px;
+}
+
+.wps-spinner {
+  flex: 0 0 auto;
+  width: 12px;
+  height: 12px;
+  border: 1.5px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: wps-spin 0.7s linear infinite;
+}
+
+@keyframes wps-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Notices / errors
+ * ------------------------------------------------------------------ */
+
+.wps-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 0.5px solid transparent;
+  border-radius: var(--dsw-radius-lg, 10px);
+  font-size: 12.5px;
+  line-height: 1.55;
+}
+
+.wps-notice-main {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.wps-notice-text {
+  margin: 0;
+}
+
+.wps-notice--error {
+  background: rgba(214, 69, 69, 0.07);
+  border-color: rgba(214, 69, 69, 0.26);
+  color: var(--dsw-alias-state-error-primary, #d64545);
+}
+
+.wps-notice--success {
+  background: rgba(34, 160, 107, 0.08);
+  border-color: rgba(34, 160, 107, 0.26);
+  color: var(--dsw-alias-state-success-primary, #22a06b);
+}
+
+.wps-notice--warn {
+  background: rgba(196, 123, 10, 0.08);
+  border-color: rgba(196, 123, 10, 0.26);
+  color: var(--dsw-alias-state-warn-primary, #c47b0a);
+}
+
+.wps-inline-error {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 12px;
+  border: 0.5px solid rgba(214, 69, 69, 0.26);
+  border-radius: var(--dsw-radius-lg, 10px);
+  background: rgba(214, 69, 69, 0.07);
+  color: var(--dsw-alias-state-error-primary, #d64545);
+  font-size: 12.5px;
+  line-height: 1.55;
+}
+
+.wps-inline-error-text {
+  margin: 0;
+  font-weight: 500;
+}
+
+.wps-raw-details {
+  font-size: 12px;
+  color: var(--dsw-alias-label-secondary, #7b8494);
+}
+
+.wps-raw-details summary {
+  width: max-content;
+  max-width: 100%;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.wps-raw-details code {
+  display: block;
+  margin-top: 6px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: var(--dsw-alias-bg-layer-2, #f5f6f8);
+  color: var(--dsw-alias-label-secondary, #7b8494);
+  font-family: var(
+    --dsw-font-mono,
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace
+  );
+  font-size: 11.5px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* ------------------------------------------------------------------ *
+ * Pending OAuth
+ * ------------------------------------------------------------------ */
+
+.wps-pending {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border: 1px dashed var(--dsw-alias-border-l2, #e3e6ec);
+  border-radius: var(--dsw-radius-lg, 10px);
+  background: var(--dsw-alias-bg-layer-2, #f5f6f8);
+}
+
+.wps-pending-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--dsw-alias-label-primary, #1d2433);
+}
+
+/* ------------------------------------------------------------------ *
+ * Loading skeleton
+ * ------------------------------------------------------------------ */
+
+.wps-loading {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.wps-skel {
+  display: block;
+  border-radius: 6px;
+  background: var(--dsw-alias-bg-layer-2, #f5f6f8);
+  animation: wps-pulse 1.4s ease-in-out infinite;
+}
+
+.wps-skel--title {
+  width: 42%;
+  height: 16px;
+}
+
+.wps-skel--line {
+  width: 100%;
+  height: 12px;
+}
+
+.wps-skel--short {
+  width: 62%;
+}
+
+@keyframes wps-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Connected account card
+ * ------------------------------------------------------------------ */
+
+.wps-account {
+  gap: 12px;
+}
+
+.wps-status-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.wps-dot {
+  flex: 0 0 auto;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--dsw-alias-label-tertiary, #9aa3b2);
+}
+
+.wps-dot--success {
+  background: var(--dsw-alias-state-success-primary, #22a06b);
+  box-shadow: 0 0 0 3px rgba(34, 160, 107, 0.16);
+}
+
+.wps-profile {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.wps-profile-name {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--dsw-alias-label-primary, #1d2433);
+}
+
+.wps-profile-email {
+  margin: 0;
+  font-size: 12.5px;
+  color: var(--dsw-alias-label-secondary, #7b8494);
+  word-break: break-all;
+}
+
+.wps-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 12.5px;
+  color: var(--dsw-alias-label-secondary, #7b8494);
+}
+
+.wps-meta-warn {
+  color: var(--dsw-alias-state-warn-primary, #c47b0a);
+}
+
+/* ------------------------------------------------------------------ *
+ * Accessibility + responsive
+ * ------------------------------------------------------------------ */
+
+.wps-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 560px) {
+  .wps-cred-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .wps-step-actions {
+    align-items: stretch;
+  }
+
+  .wps-step-actions .wps-btn {
+    flex: 1 1 auto;
+  }
+
+  .wps-copy-row {
+    align-items: stretch;
+  }
+
+  .wps-redirect-value {
+    flex-basis: 100%;
+  }
+
+  .wps-copy-row .wps-btn {
+    flex: 0 0 auto;
+    align-self: flex-start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wps-root .wps-spinner,
+  .wps-root .wps-skel {
+    animation: none;
+  }
+
+  .wps-root .wps-btn,
+  .wps-root .wps-input {
+    transition: none;
+  }
+}

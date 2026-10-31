@@ -1,0 +1,459 @@
+/* styles.css — WHOOP health dashboard visual system. Injected globally by shell.js from WHOOP_CSS. Every
+ * selector is scoped under .wh-root except the two documented exceptions: the macOS top-clearance rule for
+ * the sticky page heading and `body[data-ds-dark-theme]` overrides for the few literal accent colors.
+ * Surfaces/text/borders come from --dsw-alias-* tokens with literal fallbacks; metric accents are fixed
+ * artwork colors. No @import, no external URLs, no element selectors outside .wh-root. */
+
+/* Theme tokens */
+.wh-root {
+  --wh-page-pad: 24px; --wh-bg: var(--dsw-alias-bg-base, #f7f8fa); --wh-card: var(--dsw-alias-bg-layer-1, #ffffff);
+  --wh-card-2: var(--dsw-alias-bg-layer-2, #f3f4f7); --wh-border: var(--dsw-alias-border-l1, #ececf1);
+  --wh-border-strong: var(--dsw-alias-border-l2, #dfe2e9); --wh-text: var(--dsw-alias-label-primary, #1f2329);
+  --wh-text-2: var(--dsw-alias-label-secondary, #7b8494);
+  --wh-hover: var(--dsw-alias-interactive-bg-hover, rgba(15, 23, 42, 0.055));
+  --wh-brand: var(--dsw-alias-brand-primary, #4d6bfe); --wh-recovery: #16a34a; --wh-strain: #0ea5b7;
+  --wh-sleep: #6366f1; --wh-sleep-soft: #a5b4fc; --wh-warn: #e0a008; --wh-danger: #ef4444; --wh-muted: #94a3b8;
+  --wh-stage-light: #93c5fd; --wh-stage-deep: #4338ca; --wh-stage-rem: #a78bfa; --wh-stage-awake: #fbbf24;
+  --wh-stage-nodata: #d1d5db; --wh-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 10px 30px rgba(15, 23, 42, 0.05);
+  --wh-shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04); box-sizing: border-box; height: 100%; overflow-y: auto;
+  overflow-x: hidden; background: var(--wh-bg); color: var(--wh-text); -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+.wh-root *,
+.wh-root *::before,
+.wh-root *::after { box-sizing: border-box }
+
+/* Page frame */
+.wh-root .wh-page { max-width: 1080px; margin: 0 auto; padding: 0 var(--wh-page-pad) 48px }
+
+/* Sticky header — controls (language / refresh) live top-right as required. */
+.wh-root .wh-topbar {
+  position: sticky; top: 0; z-index: 20; margin: 0 calc(var(--wh-page-pad) * -1); padding: 14px var(--wh-page-pad) 10px;
+  background: var(--wh-bg);
+}
+.wh-root .wh-topbar-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px }
+.wh-root .wh-heading { min-width: 0 }
+.wh-root .wh-heading-row { display: flex; align-items: center; gap: 8px; min-width: 0 }
+.wh-root .wh-title { margin: 0; font-size: 21px; line-height: 1.2; font-weight: 650; letter-spacing: -0.015em; white-space: nowrap }
+.wh-root .wh-heading-meta { display: flex; align-items: baseline; gap: 10px; margin-top: 3px; min-width: 0 }
+.wh-root .wh-subtitle { font-size: 12.5px; color: var(--wh-text-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
+.wh-root .wh-live {
+  display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; color: var(--wh-text-2);
+  font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.wh-root .wh-live::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: currentColor; opacity: 0.55; flex: none }
+.wh-root .wh-controls { display: flex; align-items: center; gap: 8px; flex: none }
+
+/* Buttons, badge, chip, segmented control */
+.wh-root .wh-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 34px; padding: 0 12px;
+  border: 1px solid var(--wh-border); border-radius: 10px; background: var(--wh-card); color: var(--wh-text);
+  font: inherit; font-size: 12.5px; font-weight: 550; line-height: 1; cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.06s ease;
+}
+.wh-root .wh-btn:hover:not(:disabled) { background: var(--wh-hover) }
+.wh-root .wh-btn:active:not(:disabled) { transform: translateY(1px) }
+.wh-root .wh-btn:focus-visible { outline: 2px solid var(--wh-brand); outline-offset: 2px }
+.wh-root .wh-btn:disabled { opacity: 0.55; cursor: default }
+.wh-root .wh-btn--icon { width: 34px; padding: 0 }
+.wh-root .wh-btn--primary {
+  background: var(--dsw-alias-button-primary-fill, var(--wh-brand));
+  border-color: var(--dsw-alias-button-primary-fill, var(--wh-brand));
+  color: var(--dsw-alias-label-primary-foreground, #fff);
+}
+.wh-root .wh-btn--primary:hover:not(:disabled) {
+  background: var(--dsw-alias-button-primary-hover, var(--wh-brand));
+  border-color: var(--dsw-alias-button-primary-hover, var(--wh-brand));
+  filter: brightness(1.03);
+}
+.wh-root .wh-btn--ghost { background: transparent; border-color: transparent }
+.wh-root .wh-lang-btn { letter-spacing: 0.02em }
+.wh-root .wh-lang-mark { font-size: 12px; font-weight: 650; letter-spacing: 0.02em }
+.wh-root .wh-glyph { display: block; flex: none }
+.wh-root .wh-spinner {
+  width: 14px; height: 14px; border-radius: 50%; border: 2px solid currentColor; border-right-color: transparent;
+  opacity: 0.7; animation: wh-spin 0.8s linear infinite;
+}
+.wh-root .wh-chip {
+  display: inline-flex; align-items: center; height: 24px; padding: 0 10px; border-radius: 999px;
+  background: var(--wh-card-2); color: var(--wh-text-2); font-size: 11.5px; font-weight: 550; white-space: nowrap;
+}
+.wh-root .wh-seg { display: inline-flex; padding: 2px; border: 1px solid var(--wh-border); border-radius: 9px; background: var(--wh-card-2) }
+.wh-root .wh-seg-btn {
+  height: 26px; padding: 0 10px; border: 0; border-radius: 7px; background: transparent; color: var(--wh-text-2);
+  font: inherit; font-size: 11.5px; font-weight: 600; cursor: pointer;
+}
+.wh-root .wh-seg-btn:hover { color: var(--wh-text) }
+.wh-root .wh-seg-btn.is-active { background: var(--wh-card); color: var(--wh-text); box-shadow: var(--wh-shadow-sm) }
+.wh-root .wh-seg-btn:focus-visible { outline: 2px solid var(--wh-brand); outline-offset: 1px }
+
+/* Unbound fallback — minimal: WHOOP mark + title + one line + settings CTA */
+.wh-root .wh-unbound {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 46vh;
+  max-width: 420px; margin: 0 auto; padding: 48px 20px 64px; text-align: center;
+}
+.wh-root .wh-unbound-mark {
+  display: flex; align-items: center; justify-content: center; width: 64px; height: 64px; border-radius: 50%;
+  color: var(--wh-brand); background: rgba(77, 107, 254, 0.1); box-shadow: 0 6px 20px rgba(77, 107, 254, 0.12);
+}
+.wh-root .wh-whoop-mark { display: block }
+.wh-root .wh-unbound-title { margin: 18px 0 0; font-size: 19px; font-weight: 650; letter-spacing: -0.01em }
+.wh-root .wh-unbound-body { margin: 8px 0 0; max-width: 360px; font-size: 13px; line-height: 1.6; color: var(--wh-text-2) }
+.wh-root .wh-unbound-action { margin-top: 22px }
+.wh-root .wh-unbound-btn { height: 38px; padding: 0 18px; border-radius: 12px; font-size: 13px }
+.wh-root .wh-unbound-hint {
+  margin: 14px 0 0; max-width: 360px; font-size: 11.5px; line-height: 1.55; color: var(--wh-text-2);
+}
+
+/* Cards + section headings */
+.wh-root .wh-section { margin-top: 30px }
+.wh-root .wh-section-head {
+  display: flex; align-items: flex-end; justify-content: space-between; gap: 12px 16px; margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.wh-root .wh-section-head-text { min-width: 0 }
+.wh-root .wh-section-title { margin: 0; font-size: 15.5px; font-weight: 650; letter-spacing: -0.01em }
+.wh-root .wh-section-sub { margin: 3px 0 0; font-size: 12px; color: var(--wh-text-2) }
+.wh-root .wh-section-head-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap }
+.wh-root .wh-card { background: var(--wh-card); border: 1px solid var(--wh-border); border-radius: 18px; box-shadow: var(--wh-shadow-sm) }
+
+/* 1. Hero — three WHOOP-style score rings */
+.wh-root .wh-hero { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 20px }
+.wh-root .wh-hero-card {
+  position: relative; overflow: hidden; min-width: 0; padding: 16px 18px 18px; border: 1px solid var(--wh-border);
+  border-radius: 20px; background: var(--wh-card); box-shadow: var(--wh-shadow);
+}
+.wh-root .wh-hero-card::before { content: ''; position: absolute; inset: -55% -25% auto; height: 85%; pointer-events: none; border-radius: 50% }
+.wh-root .wh-hero-card--recovery::before { background: radial-gradient(closest-side, rgba(22, 163, 74, 0.17), transparent) }
+.wh-root .wh-hero-card--strain::before { background: radial-gradient(closest-side, rgba(14, 165, 183, 0.17), transparent) }
+.wh-root .wh-hero-card--sleep::before { background: radial-gradient(closest-side, rgba(99, 102, 241, 0.2), transparent) }
+.wh-root .wh-hero-head { position: relative; display: flex; align-items: center; gap: 7px; min-width: 0 }
+.wh-root .wh-hero-dot { width: 7px; height: 7px; border-radius: 50%; flex: none }
+.wh-root .wh-hero-label { font-size: 12.5px; font-weight: 600; letter-spacing: 0.01em; white-space: nowrap }
+.wh-root .wh-hero-verdict {
+  margin-left: auto; font-size: 11px; color: var(--wh-text-2); white-space: nowrap; overflow: hidden;
+  text-overflow: ellipsis;
+}
+.wh-root .wh-hero-verdict.is-empty { opacity: 0.75 }
+.wh-root .wh-hero-ring { position: relative; display: flex; justify-content: center; margin: 8px 0 2px }
+.wh-root .wh-hero-note { position: relative; margin: 2px 0 0; text-align: center; font-size: 11px; color: var(--wh-warn) }
+.wh-root .wh-hero-subs {
+  position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin-top: 12px;
+  padding-top: 12px; border-top: 1px solid var(--wh-border);
+}
+.wh-root .wh-submetric { display: flex; flex-direction: column; gap: 2px; min-width: 0 }
+.wh-root .wh-submetric-label { font-size: 10.5px; color: var(--wh-text-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
+.wh-root .wh-submetric-value {
+  font-size: 12.5px; font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Score ring */
+.wh-root .wh-ring { position: relative; width: var(--wh-ring-size, 156px); height: var(--wh-ring-size, 156px); flex: none }
+.wh-root .wh-ring-svg { display: block; width: 100%; height: 100% }
+.wh-root .wh-ring-track { stroke: var(--wh-border-strong); opacity: 0.7 }
+.wh-root .wh-ring-value {
+  stroke: var(--wh-ring-color, var(--wh-strain)); filter: drop-shadow(0 0 6px var(--wh-ring-color, transparent));
+  transition: stroke-dashoffset 0.55s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.wh-root .wh-ring-center {
+  position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 2px; pointer-events: none;
+}
+.wh-root .wh-ring-num {
+  font-size: calc(var(--wh-ring-size, 156px) * 0.27); line-height: 1; font-weight: 650; letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+.wh-root .wh-ring-cap { font-size: 11.5px; font-weight: 550; letter-spacing: 0.02em; color: var(--wh-text-2) }
+.wh-root .wh-ring--empty .wh-ring-num { color: var(--wh-text-2); font-weight: 550 }
+
+/* 2. Today's metric grid */
+.wh-root .wh-metrics { display: grid; grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); gap: 10px }
+.wh-root .wh-metric {
+  min-width: 0; padding: 12px 14px 10px; border: 1px solid var(--wh-border); border-radius: 14px;
+  background: var(--wh-card); box-shadow: var(--wh-shadow-sm);
+}
+.wh-root .wh-metric-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px }
+.wh-root .wh-metric-label { font-size: 11.5px; font-weight: 550; color: var(--wh-text-2) }
+.wh-root .wh-metric-body { display: flex; align-items: baseline; gap: 3px; margin-top: 6px; min-width: 0 }
+.wh-root .wh-metric-value {
+  font-size: 25px; line-height: 1.05; font-weight: 650; letter-spacing: -0.02em; font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.wh-root .wh-metric-value--empty { color: var(--wh-text-2); font-weight: 500 }
+.wh-root .wh-metric-unit { font-size: 11.5px; color: var(--wh-text-2); white-space: nowrap }
+.wh-root .wh-metric-spark { margin-top: 8px }
+.wh-root .wh-sparkline { display: block; width: 100% }
+
+/* 3. Trend charts */
+.wh-root .wh-charts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px }
+.wh-root .wh-chart-card { padding: 16px 18px 12px }
+.wh-root .wh-chart-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px }
+.wh-root .wh-chart-head-text { min-width: 0 }
+.wh-root .wh-chart-title { margin: 0; font-size: 13.5px; font-weight: 650 }
+.wh-root .wh-chart-sub { margin: 2px 0 0; font-size: 11.5px; color: var(--wh-text-2) }
+.wh-root .wh-chart-avg {
+  flex: none; padding: 3px 8px; border-radius: 999px; background: var(--wh-card-2); color: var(--wh-text-2);
+  font-size: 11px; font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.wh-root .wh-chart-legend { display: flex; flex-wrap: wrap; gap: 6px 12px; margin-top: 8px; font-size: 11px; color: var(--wh-text-2) }
+.wh-root .wh-legend-item { display: inline-flex; align-items: center; gap: 5px }
+.wh-root .wh-legend-dot { width: 7px; height: 7px; border-radius: 2px; flex: none }
+.wh-root .wh-chart-body { margin-top: 6px }
+.wh-root .wh-chart { position: relative }
+.wh-root .wh-chart-svg { display: block; width: 100%; height: auto; touch-action: pan-y }
+.wh-root .wh-chart-axis { fill: var(--wh-text-2); font-size: 10.5px; font-family: inherit }
+.wh-root .wh-chart-grid { stroke: var(--wh-border); stroke-width: 1 }
+.wh-root .wh-chart-cross { stroke: var(--wh-text-2); stroke-width: 1; stroke-dasharray: 3 3; opacity: 0.55 }
+.wh-root .wh-chart-hover-dot { stroke: var(--wh-card); stroke-width: 2 }
+.wh-root .wh-chart-bar { opacity: 0.85; transition: opacity 0.12s ease }
+.wh-root .wh-chart-bar.is-hover { opacity: 1 }
+.wh-root .wh-chart-empty {
+  display: flex; align-items: center; justify-content: center; min-height: 140px; border-radius: 12px;
+  background: var(--wh-card-2); color: var(--wh-text-2); font-size: 12px;
+}
+.wh-root .wh-chart-tip {
+  position: absolute; top: 2px; transform: translateX(-50%); z-index: 3; min-width: 118px; padding: 7px 10px;
+  border: 1px solid var(--wh-border-strong); border-radius: 10px; background: var(--wh-card);
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.12); font-size: 11.5px; pointer-events: none;
+}
+.wh-root .wh-chart-tip-title { margin-bottom: 4px; font-weight: 600 }
+.wh-root .wh-chart-tip-row { display: flex; align-items: center; gap: 6px; line-height: 1.5 }
+.wh-root .wh-chart-tip-dot { width: 6px; height: 6px; border-radius: 50%; flex: none }
+.wh-root .wh-chart-tip-label { color: var(--wh-text-2) }
+.wh-root .wh-chart-tip-value { margin-left: auto; padding-left: 10px; font-weight: 600; font-variant-numeric: tabular-nums }
+
+/* 4. Sleep detail */
+.wh-root .wh-sleep-card { padding: 16px 18px }
+.wh-root .wh-sleep-stages { min-width: 0 }
+.wh-root .wh-sleep-stages-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px }
+.wh-root .wh-sleep-label { margin: 0; font-size: 12.5px; font-weight: 650 }
+.wh-root .wh-sleep-meta { font-size: 11.5px; color: var(--wh-text-2); font-variant-numeric: tabular-nums }
+.wh-root .wh-stage-bar-wrap { margin: 10px 0 12px }
+.wh-root .wh-stage-bar { display: block; width: 100% }
+.wh-root .wh-stage-bar--empty { height: 16px; border-radius: 8px; background: var(--wh-card-2) }
+.wh-root .wh-stage-legend { display: flex; flex-wrap: wrap; gap: 8px 16px }
+.wh-root .wh-stage-legend-item { display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--wh-text-2) }
+.wh-root .wh-stage-dot { width: 8px; height: 8px; border-radius: 2px; flex: none }
+.wh-root .wh-stage-legend-label { white-space: nowrap }
+.wh-root .wh-stage-legend-value { color: var(--wh-text); font-weight: 600; font-variant-numeric: tabular-nums }
+.wh-root .wh-sleep-compare {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 22px; margin-top: 18px; padding-top: 16px;
+  border-top: 1px solid var(--wh-border);
+}
+.wh-root .wh-compare-row { min-width: 0 }
+.wh-root .wh-compare-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 6px }
+.wh-root .wh-compare-label { font-size: 11.5px; color: var(--wh-text-2) }
+.wh-root .wh-compare-value { font-size: 12.5px; font-weight: 600; font-variant-numeric: tabular-nums }
+.wh-root .wh-meter { height: 7px; border-radius: 999px; background: var(--wh-card-2); overflow: hidden }
+.wh-root .wh-meter-fill { display: block; height: 100%; border-radius: 999px; opacity: 0.9 }
+.wh-root .wh-meter-fill.is-muted { opacity: 0.42 }
+.wh-root .wh-sleep-stats {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); gap: 12px 16px; margin-top: 18px;
+  padding-top: 16px; border-top: 1px solid var(--wh-border);
+}
+.wh-root .wh-sleep-stat { display: flex; flex-direction: column; gap: 2px; min-width: 0 }
+.wh-root .wh-sleep-stat-label { font-size: 11px; color: var(--wh-text-2) }
+.wh-root .wh-sleep-stat-value { font-size: 14.5px; font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap }
+
+/* 5. Workouts */
+.wh-root .wh-workouts { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px }
+.wh-root .wh-workout {
+  display: flex; align-items: center; gap: 14px; padding: 14px 16px; border: 1px solid var(--wh-border);
+  border-radius: 16px; background: var(--wh-card); box-shadow: var(--wh-shadow-sm);
+}
+.wh-root .wh-workout-icon {
+  display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; flex: none;
+  border: 1px solid rgba(14, 165, 183, 0.18); border-radius: 12px; background: rgba(14, 165, 183, 0.1);
+  color: var(--wh-strain);
+}
+.wh-root .wh-sport-icon { display: block }
+.wh-root .wh-workout-main { flex: 1 1 auto; min-width: 0 }
+.wh-root .wh-workout-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap }
+.wh-root .wh-workout-name { font-size: 13.5px; font-weight: 650 }
+.wh-root .wh-workout-date { font-size: 11.5px; color: var(--wh-text-2) }
+.wh-root .wh-workout-meta {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 2px 14px; margin-top: 5px; font-size: 11.5px;
+  color: var(--wh-text-2);
+}
+.wh-root .wh-meta-item { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap }
+.wh-root .wh-workout-zones { margin-top: 9px }
+.wh-root .wh-workout-strain { display: flex; flex-direction: column; align-items: flex-end; gap: 1px; flex: none; padding-left: 6px }
+.wh-root .wh-workout-strain-value {
+  font-size: 20px; line-height: 1.1; font-weight: 650; font-variant-numeric: tabular-nums; color: var(--wh-strain);
+}
+.wh-root .wh-workout-strain-value.is-empty { color: var(--wh-text-2) }
+.wh-root .wh-workout-strain-label { font-size: 10.5px; color: var(--wh-text-2) }
+
+/* 6. Body & profile */
+.wh-root .wh-body-card { padding: 18px 20px }
+.wh-root .wh-profile { display: flex; align-items: center; gap: 14px }
+.wh-root .wh-avatar {
+  display: flex; align-items: center; justify-content: center; width: 48px; height: 48px; flex: none;
+  border-radius: 50%; background: linear-gradient(135deg, #0ea5b7, #6366f1); color: #fff; font-size: 15px;
+  font-weight: 650; letter-spacing: 0.02em;
+}
+.wh-root .wh-profile-text { min-width: 0 }
+.wh-root .wh-profile-name { font-size: 15px; font-weight: 650 }
+.wh-root .wh-profile-email { margin-top: 2px; font-size: 12px; color: var(--wh-text-2); word-break: break-all }
+.wh-root .wh-body-stats {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 16px; padding-top: 16px;
+  border-top: 1px solid var(--wh-border);
+}
+.wh-root .wh-body-stat { display: flex; flex-direction: column; gap: 2px; min-width: 0 }
+.wh-root .wh-body-stat-label { font-size: 11px; color: var(--wh-text-2) }
+.wh-root .wh-body-stat-value { font-size: 15px; font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap }
+.wh-root .wh-footnote { margin: 16px 0 0; font-size: 11px; color: var(--wh-text-2) }
+
+/* Empty notes */
+.wh-root .wh-empty { display: flex; align-items: flex-start; gap: 10px; padding: 6px 2px }
+.wh-root .wh-empty-icon { flex: none; margin-top: 1px; color: var(--wh-text-2) }
+.wh-root .wh-empty-text { min-width: 0 }
+.wh-root .wh-empty-title { margin: 0; font-size: 13px; font-weight: 600 }
+.wh-root .wh-empty-body { margin: 3px 0 0; font-size: 12px; line-height: 1.55; color: var(--wh-text-2) }
+
+/* Loading skeleton */
+.wh-root .wh-loading { margin-top: 20px }
+.wh-root .wh-skel { position: relative; overflow: hidden; background: var(--wh-card-2); border-radius: 10px }
+.wh-root .wh-skel::after {
+  content: ''; position: absolute; inset: 0; transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+  animation: wh-shimmer 1.4s ease-in-out infinite;
+}
+.wh-root .wh-skel-hero { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px }
+.wh-root .wh-skel-hero-card {
+  display: flex; flex-direction: column; align-items: center; gap: 12px; height: 258px; padding: 20px 18px;
+  border: 1px solid var(--wh-border); border-radius: 20px; background: var(--wh-card);
+}
+.wh-root .wh-skel-hero-card::after { display: none }
+.wh-root .wh-skel-ring { width: 132px; height: 132px; border-radius: 50% }
+.wh-root .wh-skel-line { height: 12px; border-radius: 6px }
+.wh-root .wh-skel-line--value { height: 22px }
+.wh-root .wh-skel-metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 18px }
+.wh-root .wh-skel-metric {
+  display: flex; flex-direction: column; gap: 12px; height: 92px; padding: 14px; border-radius: 14px;
+  background: var(--wh-card); border: 1px solid var(--wh-border);
+}
+.wh-root .wh-skel-metric::after { display: none }
+.wh-root .wh-skel-charts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 18px }
+.wh-root .wh-skel-chart { height: 230px; border-radius: 18px }
+.wh-root .wh-loading-hint { margin-top: 16px; text-align: center; font-size: 12px; color: var(--wh-text-2) }
+
+/* Full-page states (not connected / config / transport errors / empty) */
+.wh-root .wh-state { margin: 44px auto 0; max-width: 520px }
+.wh-root .wh-state-card {
+  padding: 36px 28px; border: 1px solid var(--wh-border); border-radius: 20px; background: var(--wh-card);
+  box-shadow: var(--wh-shadow); text-align: center;
+}
+.wh-root .wh-state-icon {
+  display: inline-flex; align-items: center; justify-content: center; width: 46px; height: 46px; margin-bottom: 14px;
+  border-radius: 50%; background: rgba(77, 107, 254, 0.1); color: var(--wh-brand);
+}
+.wh-root .wh-state-icon--warn { background: rgba(224, 160, 8, 0.12); color: var(--wh-warn) }
+.wh-root .wh-state-icon--danger { background: rgba(239, 68, 68, 0.1); color: var(--wh-danger) }
+.wh-root .wh-state-icon--muted { background: var(--wh-card-2); color: var(--wh-text-2) }
+.wh-root .wh-state-title { margin: 0 0 8px; font-size: 17px; font-weight: 650; letter-spacing: -0.01em }
+.wh-root .wh-state-body { margin: 0 auto; max-width: 400px; font-size: 13px; line-height: 1.6; color: var(--wh-text-2) }
+.wh-root .wh-state-hint { margin: 8px auto 0; max-width: 400px; font-size: 12px; color: var(--wh-text-2) }
+.wh-root .wh-state-detail {
+  margin: 14px auto 0; max-width: 420px; padding: 8px 10px; border-radius: 8px; background: var(--wh-card-2);
+  color: var(--wh-text-2); font-size: 11px; line-height: 1.5; word-break: break-word;
+}
+.wh-root .wh-state-actions { display: flex; justify-content: center; margin-top: 20px }
+.wh-root .wh-inline-error {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 16px; padding: 10px 14px;
+  border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 12px; background: rgba(239, 68, 68, 0.07); font-size: 12px;
+}
+.wh-root .wh-inline-error-icon { flex: none; color: var(--wh-danger) }
+.wh-root .wh-inline-error-text { display: flex; flex-direction: column; gap: 1px; flex: 1 1 auto; min-width: 0 }
+.wh-root .wh-inline-error-title { font-weight: 600 }
+.wh-root .wh-inline-error-msg { font-size: 11px; color: var(--wh-text-2); word-break: break-word }
+
+/* Footer + screen-reader-only helper */
+.wh-root .wh-footer {
+  display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 32px; padding-top: 16px;
+  border-top: 1px solid var(--wh-border); font-size: 11px; color: var(--wh-text-2);
+}
+.wh-root .wh-footer-item { display: inline-flex; align-items: center; gap: 6px }
+.wh-root .wh-sr {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0);
+  white-space: nowrap; border: 0;
+}
+
+/* macOS desktop: entry-page top clearance for the sticky heading */
+[data-platform='darwin'] .wh-root .wh-topbar { padding-top: calc(28px + var(--dsh-frame-top-clearance, 0px)) }
+
+/* Responsive: the main panel can be as narrow as ~380px */
+@media (max-width: 900px) {
+  .wh-root .wh-charts,
+  .wh-root .wh-skel-charts { grid-template-columns: minmax(0, 1fr) }
+}
+@media (max-width: 760px) {
+  .wh-root .wh-hero,
+  .wh-root .wh-skel-hero { grid-template-columns: minmax(0, 1fr) }
+  .wh-root .wh-hero-card { padding: 16px }
+  .wh-root .wh-skel-hero-card { height: 220px }
+  .wh-root .wh-skel-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)) }
+}
+@media (max-width: 620px) {
+  .wh-root { --wh-page-pad: 14px }
+  .wh-root .wh-title { font-size: 18px }
+  .wh-root .wh-btn-text { display: none }
+  .wh-root .wh-btn--refresh { width: 34px; padding: 0 }
+  .wh-root .wh-body-stats { grid-template-columns: repeat(2, minmax(0, 1fr)) }
+  .wh-root .wh-sleep-compare { grid-template-columns: minmax(0, 1fr) }
+  .wh-root .wh-workout { align-items: flex-start; padding: 12px 14px; gap: 10px }
+  .wh-root .wh-workout-icon { width: 38px; height: 38px; border-radius: 10px }
+  .wh-root .wh-workout-strain-value { font-size: 17px }
+  .wh-root .wh-section { margin-top: 26px }
+  .wh-root .wh-unbound { min-height: 40vh; padding: 32px 16px 48px }
+}
+@media (max-width: 420px) {
+  .wh-root .wh-subtitle { display: none }
+  .wh-root .wh-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px }
+  .wh-root .wh-metric { padding: 11px 12px 9px }
+  .wh-root .wh-metric-value { font-size: 22px }
+  .wh-root .wh-sleep-stats { grid-template-columns: repeat(2, minmax(0, 1fr)) }
+  .wh-root .wh-state-card { padding: 28px 20px }
+}
+
+/* Motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .wh-root .wh-spinner,
+  .wh-root .wh-skel::after { animation: none }
+  .wh-root .wh-ring-value,
+  .wh-root .wh-btn,
+  .wh-root .wh-chart-bar { transition: none }
+}
+
+/* Dark theme: the host sets body[data-ds-dark-theme]; adjust the literal accent/artwork colors and the few
+ * hard-coded tints. */
+body[data-ds-dark-theme] .wh-root {
+  --wh-bg: var(--dsw-alias-bg-base, #17191e); --wh-card: var(--dsw-alias-bg-layer-1, #202329);
+  --wh-card-2: var(--dsw-alias-bg-layer-2, #282c34); --wh-border: var(--dsw-alias-border-l1, #333842);
+  --wh-border-strong: var(--dsw-alias-border-l2, #41464f); --wh-text: var(--dsw-alias-label-primary, #eceef2);
+  --wh-text-2: var(--dsw-alias-label-secondary, #9aa3b2);
+  --wh-hover: var(--dsw-alias-interactive-bg-hover, rgba(255, 255, 255, 0.06));
+  --wh-brand: var(--dsw-alias-brand-primary, #7d92ff); --wh-recovery: #22c55e; --wh-strain: #22b8cf;
+  --wh-sleep: #818cf8; --wh-sleep-soft: #6366f1; --wh-warn: #f0b429; --wh-danger: #f87171; --wh-muted: #7d8797;
+  --wh-stage-light: #3b82f6; --wh-stage-deep: #6366f1; --wh-stage-rem: #8b5cf6; --wh-stage-awake: #f59e0b;
+  --wh-stage-nodata: #4b5563; --wh-shadow: none; --wh-shadow-sm: none;
+}
+body[data-ds-dark-theme] .wh-root .wh-hero-card--recovery::before {
+  background: radial-gradient(closest-side, rgba(34, 197, 94, 0.22), transparent);
+}
+body[data-ds-dark-theme] .wh-root .wh-hero-card--strain::before { background: radial-gradient(closest-side, rgba(34, 184, 207, 0.22), transparent) }
+body[data-ds-dark-theme] .wh-root .wh-hero-card--sleep::before { background: radial-gradient(closest-side, rgba(129, 140, 248, 0.26), transparent) }
+body[data-ds-dark-theme] .wh-root .wh-unbound-mark { background: rgba(125, 146, 255, 0.16); box-shadow: none }
+body[data-ds-dark-theme] .wh-root .wh-avatar { background: linear-gradient(135deg, #0e7490, #4338ca) }
+body[data-ds-dark-theme] .wh-root .wh-workout-icon { background: rgba(34, 184, 207, 0.12); border-color: rgba(34, 184, 207, 0.24) }
+body[data-ds-dark-theme] .wh-root .wh-skel::after { background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.07), transparent) }
+body[data-ds-dark-theme] .wh-root .wh-chart-tip { box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) }
+body[data-ds-dark-theme] .wh-root .wh-inline-error { background: rgba(248, 113, 113, 0.1); border-color: rgba(248, 113, 113, 0.25) }
+body[data-ds-dark-theme] .wh-root .wh-state-icon { background: rgba(125, 146, 255, 0.14) }
+@keyframes wh-spin {
+  to { transform: rotate(360deg) }
+}
+@keyframes wh-shimmer {
+  100% { transform: translateX(100%) }
+}

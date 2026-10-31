@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-label="WHOOP health">
+  <defs>
+    <linearGradient id="whoop-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#121A28"/>
+      <stop offset="1" stop-color="#05070C"/>
+    </linearGradient>
+    <linearGradient id="whoop-pulse" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#FF3B4E"/>
+      <stop offset="1" stop-color="#FF0026"/>
+    </linearGradient>
+  </defs>
+  <circle cx="64" cy="64" r="62" fill="url(#whoop-bg)"/>
+  <circle cx="64" cy="64" r="51" fill="none" stroke="#FF0026" stroke-width="7" opacity="0.92"/>
+  <circle cx="64" cy="64" r="38" fill="none" stroke="#FFFFFF" stroke-width="2" opacity="0.16"/>
+  <path d="M20 66h18l7-16 10 30 8-20 6 6h39" fill="none" stroke="#FFFFFF" stroke-width="6.5"
+        stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M20 66h18l7-16 10 30 8-20 6 6h39" fill="none" stroke="url(#whoop-pulse)" stroke-width="2.4"
+        stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+</svg>

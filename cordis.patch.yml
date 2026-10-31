@@ -1,0 +1,6 @@
+- insert:
+    - id: whoop-easy-connect
+      name: dsh-whoop-easy-connect
+      config:
+        days: 30
+        demoMode: true
